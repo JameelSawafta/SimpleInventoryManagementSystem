@@ -1,0 +1,6 @@
+# Ignore IDE-specific settings
+.idea/
+
+# Ignore build output directories
+bin/
+obj/

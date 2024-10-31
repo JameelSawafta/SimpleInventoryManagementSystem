@@ -1,5 +1,5 @@
 ﻿using SimpleInventoryManagementSystem.Models;
-using SimpleInventoryManagementSystem.Repostories;
+using SimpleInventoryManagementSystem.Repositories;
 using SimpleInventoryManagementSystem.utalis;
 
 namespace SimpleInventoryManagementSystem;
@@ -8,9 +8,17 @@ class Program
 {
     static void Main(string[] args)
     {
-        Inventory inventory = new Inventory();
-        IInventoryRepository repository = new InMemoryInventoryRepository(inventory);
-        var menu = new MenuHandler(repository);
+        var inventory = new Inventory();
+        var inMemoryRepository = new InMemoryInventoryRepository(inventory);
+        
+        var postegreSQLRepository = new PostgreSQLInventoryRepository();
+        
+       
+        var mongoRepository = new MongoInventoryRepository();
+        
+
+        
+        var menu = new MenuHandler(mongoRepository);
         menu.DisplayMenu();
     }
 }

@@ -1,6 +1,6 @@
 using SimpleInventoryManagementSystem.Models;
 
-namespace SimpleInventoryManagementSystem.Repostories;
+namespace SimpleInventoryManagementSystem.Repositories;
 
 public class InMemoryInventoryRepository : IInventoryRepository
 {

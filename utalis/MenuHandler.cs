@@ -162,7 +162,7 @@ public class MenuHandler
             Console.Write("Enter the product name to delete: ");
             string name = Console.ReadLine();
 
-            var deleted = _repository.DeletProduct(name);
+            var deleted = _repository.DeleteProduct(name);
             if (deleted)
             {
                 Console.WriteLine("Product deleted successfully.");

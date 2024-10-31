@@ -35,7 +35,7 @@ public class InMemoryInventoryRepository : IInventoryRepository
         return false;
     }
 
-    public bool DeletProduct(string productName)
+    public bool DeleteProduct(string productName)
     {
         var product = _inventory.Products.Find(p => p.Name == productName);
         if (product != null)

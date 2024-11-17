@@ -5,19 +5,23 @@ namespace SimpleInventoryManagementSystem.Repositories;
 
 public class PostgreSQLInventoryRepository : IInventoryRepository
 {
+    // try to add it to appsettings instead of add it as hard codded here
     private readonly string _connectionString = "Host=localhost;Database=inventorydb;Username=postgres;Password=0597071618";
-    public void AddProduct(Product product)
+    public void AddProduct(Product product)// we should return the same products
     {
-        using var conn = new NpgsqlConnection(_connectionString);
-        conn.Open();
+        // try to use Microsoft.Data.SqlClient library
+        using (var conn = new NpgsqlConnection(_connectionString))
+        {
+            conn.Open();
 
-        using var cmd = new NpgsqlCommand("INSERT INTO Products (id, name, price, quantity) VALUES (@id, @name, @price, @quantity)", conn);
-        cmd.Parameters.AddWithValue("id", product.Id);
-        cmd.Parameters.AddWithValue("name", product.Name);
-        cmd.Parameters.AddWithValue("price", product.Price);
-        cmd.Parameters.AddWithValue("quantity", product.Quantity);
+            using var cmd = new NpgsqlCommand("INSERT INTO Products (id, name, price, quantity) VALUES (@id, @name, @price, @quantity)", conn);
+            cmd.Parameters.AddWithValue("id", product.Id);// try to add auto generated values for the id
+            cmd.Parameters.AddWithValue("name", product.Name);
+            cmd.Parameters.AddWithValue("price", product.Price);
+            cmd.Parameters.AddWithValue("quantity", product.Quantity);
 
-        cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery();   
+        }// this should close the connection automatically
     }
 
     public List<Product>? ViewAllProducts()
@@ -42,12 +46,12 @@ public class PostgreSQLInventoryRepository : IInventoryRepository
         return products;
     }
 
-    public bool EditProduct(string productName, Product updatedProduct)
+    public bool EditProduct(string productName, Product updatedProduct)// we should return the edited products
     {
         using var conn = new NpgsqlConnection(_connectionString);
         conn.Open();
 
-        using var cmd = new NpgsqlCommand("UPDATE Products SET name = @newname, price = @newprice, quantity = @newquantity WHERE name = @productname", conn);
+        using var cmd = new NpgsqlCommand("UPDATE Products SET name = @newname, price = @newprice, quantity = @newquantity WHERE name = @productname", conn);// use where id instead of name
         cmd.Parameters.AddWithValue("newname", updatedProduct.Name);
         cmd.Parameters.AddWithValue("newprice", updatedProduct.Price);
         cmd.Parameters.AddWithValue("newquantity", updatedProduct.Quantity);
@@ -56,13 +60,13 @@ public class PostgreSQLInventoryRepository : IInventoryRepository
         return cmd.ExecuteNonQuery() > 0;
     }
 
-    public bool DeleteProduct(string productname)
+    public bool DeleteProduct(string productname)// we should return the id of the deleted values
     {
         using var conn = new NpgsqlConnection(_connectionString);
         conn.Open();
 
         using var cmd = new NpgsqlCommand("DELETE FROM Products WHERE name = @productname", conn);
-        cmd.Parameters.AddWithValue("productname", productname);
+        cmd.Parameters.AddWithValue("productname", productname);// why we don't use id?
 
         return cmd.ExecuteNonQuery() > 0;
     }
